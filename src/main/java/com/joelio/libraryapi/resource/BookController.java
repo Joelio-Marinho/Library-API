@@ -2,16 +2,26 @@ package com.joelio.libraryapi.resource;
 
 
 import com.joelio.libraryapi.DTO.BookDTO;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.joelio.libraryapi.model.Book;
+import com.joelio.libraryapi.service.BookService;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("api/books")
+@RequestMapping("/api/books")
 public class BookController {
 
-    @PostMapping
-    public BookDTO create(){
+    private BookService service;
 
+    public BookController(BookService service){
+        this.service = service;
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public BookDTO create(@RequestBody  BookDTO dto){
+      Book entity = service.save(new Book(dto.getId(),dto.getTitle(),dto.getAuthor(), dto.getIsbn()));
+
+        return new BookDTO(entity.getId(),entity.getTitle(),entity.getAuthor(), entity.getIsbn());
     }
 }
