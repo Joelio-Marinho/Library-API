@@ -3,7 +3,6 @@ package com.joelio.libraryapi.service;
 import com.joelio.libraryapi.model.Book;
 import com.joelio.libraryapi.repository.BookRepository;
 import com.joelio.libraryapi.service.impl.BookServiceImpl;
-import org.assertj.core.api.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -45,4 +44,9 @@ public class BookServiceTest {
         assertThat(saveBook.getTitle()).isEqualTo("as aventuras");
     }
 
+    @Test
+    @DisplayName("Deve lançar erro de validação quando não houver dados suficiente para criação do livro")
+    public void CreateInvalidBookTest() throws Exception{
+
+    }
 }
