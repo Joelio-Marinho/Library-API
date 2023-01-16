@@ -1,10 +1,22 @@
 package com.joelio.libraryapi.DTO;
 
-public class BookDTO {
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+public class BookDTO {
     private Long id;
+    @NotEmpty
+    @NotNull
     private String title;
+    @NotEmpty
+    @NotNull
     private String author;
+    @NotEmpty
+    @NotNull
     private String isbn;
 
     public BookDTO() {

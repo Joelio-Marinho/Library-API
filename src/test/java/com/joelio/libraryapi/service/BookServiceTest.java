@@ -1,8 +1,11 @@
 package com.joelio.libraryapi.service;
 
+import com.joelio.libraryapi.DTO.BookDTO;
+import com.joelio.libraryapi.exception.BusinessException;
 import com.joelio.libraryapi.model.Book;
 import com.joelio.libraryapi.repository.BookRepository;
 import com.joelio.libraryapi.service.impl.BookServiceImpl;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,15 +26,19 @@ public class BookServiceTest {
     BookRepository repository;
 
     @BeforeEach
-    public void setUp(){
+    public void setUp() {
         this.bookService = new BookServiceImpl(repository);
+    }
+
+    private Book createValidBook(){
+        return new Book(1l, "as aventuras", "joelio","123456");
     }
 
     @Test
     @DisplayName("Deve salvar um livro")
-    public void saveBookTest(){
+    public void saveBookTest() {
         //cenario
-        Book book = new Book(1l, "as aventuras", "joelio","123456");
+        Book book = new Book(1l, "as aventuras", "joelio", "123456");
         Mockito.when(repository.save(book)).thenReturn(book);
 
         //execução
@@ -45,8 +52,16 @@ public class BookServiceTest {
     }
 
     @Test
-    @DisplayName("Deve lançar erro de validação quando não houver dados suficiente para criação do livro")
-    public void CreateInvalidBookTest() throws Exception{
+    @DisplayName("deve lançar erro de negocio ao tentar salvar livro com ISBN repetido")
+    public void shouldNotSaveABookWithDuplicateISBN() throws Exception {
+        Book book = createValidBook();
+        Mockito.when(repository.existsByIsbn(Mockito.anyString())).thenReturn(true);
 
+        Throwable exception = Assertions.catchThrowable(()-> bookService.save(book));
+        assertThat(exception)
+                .isInstanceOf(BusinessException.class)
+                .hasMessage("Isbn ja cadastrado");
+
+        Mockito.verify(repository, Mockito.never()).save(book);
     }
 }
