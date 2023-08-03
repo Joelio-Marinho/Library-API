@@ -49,14 +49,15 @@ public class BookControllerTest {
     @DisplayName("Deve criar um livro.")
     public void createBoookTest() throws Exception{
 
-        BookDTO dto = new BookDTO(1l, "as aventuras", "joelio","123456");
-        Book  saveBook = new Book(1l, "as aventuras", "joelio","123456");
+        BookDTO dto = BookDTO.builder().author("joelio").title("as aventuras").isbn("123456").build();
+        Book  saveBook = Book.builder().id(10L).author("joelio").title("as aventuras").isbn("123456").build();;
 
         BDDMockito.given(service.save(Mockito.any(Book.class))).willReturn(saveBook);
 
         String json = new ObjectMapper().writeValueAsString(dto);
 
-        MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post(BOOK_API)
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .post(BOOK_API)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .content(json);

@@ -31,9 +31,17 @@ public class BookController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public BookDTO create(@RequestBody @Valid BookDTO dto){
-      Book entity = service.save(new Book(dto.getId(),dto.getTitle(),dto.getAuthor(), dto.getIsbn()));
+      Book entity = service.save(Book.builder()
+                                  .id(dto.getId())
+                                  .title(dto.getTitle())
+                                  .author(dto.getAuthor())
+                                  .isbn(dto.getIsbn()).build());
 
-        return new BookDTO(entity.getId(),entity.getTitle(),entity.getAuthor(), entity.getIsbn());
+        return BookDTO.builder()
+                        .id(entity.getId())
+                        .title(entity.getTitle())
+                        .author(entity.getAuthor())
+                        .isbn(entity.getIsbn()).build();
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
