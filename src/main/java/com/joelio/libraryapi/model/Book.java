@@ -6,8 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Data
@@ -15,19 +13,20 @@ import java.io.Serializable;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Table
 public class Book implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-   // @NotEmpty
+    @Column
     private String title;
 
-   // @NotEmpty
+    @Column
     private String author;
 
-  //  @NotEmpty
+    @Column
     private String isbn;
 
 }

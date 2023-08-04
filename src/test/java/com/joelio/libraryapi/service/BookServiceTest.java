@@ -38,7 +38,7 @@ public class BookServiceTest {
     @DisplayName("Deve salvar um livro")
     public void saveBookTest() {
         //cenario
-        Book  book = Book.builder().author("joelio").title("as aventuras").isbn("123456").build();
+        Book  book = createValidBook();
         Mockito.when(repository.save(book)).thenReturn(Book.builder()
                                                             .id(1L)
                                                             .author("joelio")
@@ -60,6 +60,7 @@ public class BookServiceTest {
     public void shouldNotSaveABookWithDuplicateISBN() throws Exception {
         //senario
         Book book = createValidBook();
+        // execução para informar para o repository que o ISBN existe
         Mockito.when(repository.existsByIsbn(Mockito.anyString())).thenReturn(true);
 
         // execução
