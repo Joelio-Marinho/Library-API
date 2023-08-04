@@ -20,14 +20,14 @@ public class Book implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @NotEmpty
-    @NotNull
+
+   // @NotEmpty
     private String title;
-    @NotEmpty
-    @NotNull
+
+   // @NotEmpty
     private String author;
-    @NotEmpty
-    @NotNull
+
+  //  @NotEmpty
     private String isbn;
 
 }

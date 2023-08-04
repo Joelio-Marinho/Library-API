@@ -38,8 +38,12 @@ public class BookServiceTest {
     @DisplayName("Deve salvar um livro")
     public void saveBookTest() {
         //cenario
-        Book book = new Book(1l, "as aventuras", "joelio", "123456");
-        Mockito.when(repository.save(book)).thenReturn(book);
+        Book  book = Book.builder().author("joelio").title("as aventuras").isbn("123456").build();
+        Mockito.when(repository.save(book)).thenReturn(Book.builder()
+                                                            .id(1L)
+                                                            .author("joelio")
+                                                            .title("as aventuras")
+                                                            .isbn("123456").build());
 
         //execução
         Book saveBook = bookService.save(book);
@@ -54,10 +58,14 @@ public class BookServiceTest {
     @Test
     @DisplayName("deve lançar erro de negocio ao tentar salvar livro com ISBN repetido")
     public void shouldNotSaveABookWithDuplicateISBN() throws Exception {
+        //senario
         Book book = createValidBook();
         Mockito.when(repository.existsByIsbn(Mockito.anyString())).thenReturn(true);
 
+        // execução
         Throwable exception = Assertions.catchThrowable(()-> bookService.save(book));
+
+        //verificação
         assertThat(exception)
                 .isInstanceOf(BusinessException.class)
                 .hasMessage("Isbn ja cadastrado");
