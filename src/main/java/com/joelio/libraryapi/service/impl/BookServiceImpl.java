@@ -6,6 +6,8 @@ import com.joelio.libraryapi.repository.BookRepository;
 import com.joelio.libraryapi.service.BookService;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class BookServiceImpl implements BookService {
 
@@ -20,5 +22,9 @@ public class BookServiceImpl implements BookService {
             throw new BusinessException("Isbn ja cadastrado");
         }
         return repository.save(book);
+    }
+    @Override
+    public Optional getById(Long id) {
+        return Optional.empty();
     }
 }

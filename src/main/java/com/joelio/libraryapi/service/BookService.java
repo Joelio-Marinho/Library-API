@@ -6,5 +6,5 @@ import java.util.Optional;
 
 public interface BookService {
     Book save(Book any);
-    Optional<Book> findByid(Long id);
+    Optional<Book> getById(Long id);
 }
