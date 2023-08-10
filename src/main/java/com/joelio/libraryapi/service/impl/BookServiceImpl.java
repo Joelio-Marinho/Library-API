@@ -1,9 +1,12 @@
 package com.joelio.libraryapi.service.impl;
 
+import com.joelio.libraryapi.DTO.BookDTO;
 import com.joelio.libraryapi.exception.BusinessException;
 import com.joelio.libraryapi.model.Book;
 import com.joelio.libraryapi.repository.BookRepository;
 import com.joelio.libraryapi.service.BookService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -24,12 +27,28 @@ public class BookServiceImpl implements BookService {
         return repository.save(book);
     }
     @Override
-    public Optional getById(Long id) {
-        return Optional.empty();
+    public Optional<Book> getById(Long id) {
+        return this.repository.findById(id);
     }
 
     @Override
     public void delete(Book book) {
+        if(book == null ||  book.getId()==null){
+            throw new IllegalArgumentException("Book id cant be null.");
+        }
         repository.delete(book);
+    }
+
+    @Override
+    public Book update(Book book) {
+        if(book == null ||  book.getId()==null){
+            throw new IllegalArgumentException("Book id cant be null.");
+        }
+        return repository.save(book);
+    }
+
+    @Override
+    public Page<Book> find(Book filter, Pageable pageRequest) {
+        return null;
     }
 }
