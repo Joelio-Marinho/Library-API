@@ -34,6 +34,10 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public Optional<Book> getBookByIsbn(String isbn) {
+        return Optional.ofNullable(this.repository.findByIsbn(isbn));
+    }
+    @Override
     public void delete(Book book) {
         if(book == null ||  book.getId()==null){
             throw new IllegalArgumentException("Book id cant be null.");
@@ -58,4 +62,6 @@ public class BookServiceImpl implements BookService {
                 .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING));
          return repository.findAll(example,pageRequest);
     }
+
+
 }
