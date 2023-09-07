@@ -19,11 +19,16 @@ public class Loan  implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column
     private  String isbn;
+    @Column
     private String customer;
     @ManyToOne
+    @JoinColumn(name = "book_id")
     private Book book;
+    @Column
     private LocalDate localDate;
+    @Column
     private Boolean returnd;
 
 

@@ -1,6 +1,5 @@
 package com.joelio.libraryapi.service.impl;
 
-import com.joelio.libraryapi.DTO.BookDTO;
 import com.joelio.libraryapi.exception.BusinessException;
 import com.joelio.libraryapi.model.Book;
 import com.joelio.libraryapi.repository.BookRepository;
@@ -35,7 +34,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Optional<Book> getBookByIsbn(String isbn) {
-        return Optional.ofNullable(this.repository.findByIsbn(isbn));
+        return this.repository.findByIsbn(isbn);
     }
     @Override
     public void delete(Book book) {

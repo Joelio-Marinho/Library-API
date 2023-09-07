@@ -23,6 +23,8 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles("test")
@@ -78,7 +80,7 @@ public class BookServiceTest {
                 .isInstanceOf(BusinessException.class)
                 .hasMessage("Isbn ja cadastrado");
 
-        Mockito.verify(repository, Mockito.never()).save(book);
+        verify(repository, Mockito.never()).save(book);
     }
     @Test
     @DisplayName("Deve obter um livro por id")
@@ -121,7 +123,7 @@ public class BookServiceTest {
          org.junit.jupiter.api.Assertions.assertDoesNotThrow(()-> bookService.delete(book));
 
         //verificação
-        Mockito.verify( repository, Mockito.times(1)).delete(book);
+        verify( repository, Mockito.times(1)).delete(book);
     }
 
     @Test
@@ -135,7 +137,7 @@ public class BookServiceTest {
 
 
         //verificação
-        Mockito.verify( repository, Mockito.never()).delete(book);
+        verify( repository, Mockito.never()).delete(book);
     }
 
     @Test
@@ -175,7 +177,7 @@ public class BookServiceTest {
 
 
         //verificação
-        Mockito.verify( repository, Mockito.never()).save(book);
+        verify( repository, Mockito.never()).save(book);
     }
 
     @Test
@@ -200,4 +202,19 @@ public class BookServiceTest {
         assertThat(result.getPageable().getPageSize()).isEqualTo(10);
     }
 
+    @Test
+    @DisplayName("Deve retornar um livro pelo isbn")
+    public void getBookByIsbnTest() {
+        String isbn = "123";
+        Mockito.when(repository.findByIsbn(isbn)).thenReturn(Optional.of(Book.builder().id(1l).isbn(isbn).build()));
+
+        Optional<Book> book = bookService.getBookByIsbn(isbn);
+
+        assertThat(book.isPresent()).isTrue();
+        assertThat(book.get().getId()).isEqualTo(1l);
+        assertThat(book.get().getIsbn()).isEqualTo(isbn);
+
+        verify(repository,times(1)).findByIsbn(isbn);
+
+    }
 }

@@ -26,7 +26,7 @@ public class BookRepositoryTest {
     @Autowired
     BookRepository bookRepository;
 
-    private Book createdNewBook(){
+    public Book createdNewBook(){
         Book book = Book.builder().author("joelio").title("as aventuras").isbn("1234").build();
         return book;
     }
