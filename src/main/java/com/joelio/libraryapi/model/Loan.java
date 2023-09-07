@@ -1,9 +1,6 @@
 package com.joelio.libraryapi.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,7 +13,7 @@ import java.time.LocalDate;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-//@Entity
+@Entity
 public class Loan  implements Serializable {
 
     @Id
@@ -24,7 +21,7 @@ public class Loan  implements Serializable {
     private Long id;
     private  String isbn;
     private String customer;
-
+    @ManyToOne
     private Book book;
     private LocalDate localDate;
     private Boolean returnd;

@@ -2,6 +2,7 @@ package com.joelio.libraryapi.api.exeption;
 
 import com.joelio.libraryapi.exception.BusinessException;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,5 +24,9 @@ public class ApiErrors {
 
     public List<String> getErrors() {
         return errors;
+    }
+
+    public ApiErrors(ResponseStatusException errors) {
+        this.errors = Arrays.asList(errors.getReason());
     }
 }
