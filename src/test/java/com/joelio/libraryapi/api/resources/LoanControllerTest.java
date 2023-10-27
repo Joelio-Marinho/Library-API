@@ -2,6 +2,7 @@ package com.joelio.libraryapi.api.resources;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.joelio.libraryapi.DTO.LoanDTO;
+import com.joelio.libraryapi.DTO.ReturnedLoanDTO;
 import com.joelio.libraryapi.exception.BusinessException;
 import com.joelio.libraryapi.model.Book;
 import com.joelio.libraryapi.model.Loan;
@@ -28,6 +29,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.time.LocalDate;
 import java.util.Optional;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
@@ -128,4 +130,47 @@ public class LoanControllerTest {
 
 
     }
+
+    @Test
+    @DisplayName("Deve retornar um livro")
+    public void returnBookTest() throws Exception{
+
+        ReturnedLoanDTO dto = ReturnedLoanDTO.builder().returned(true).build();
+
+        Loan loan = Loan.builder().id(1l).build();
+
+        BDDMockito.given(loanService.getById(Mockito.anyLong())).willReturn(Optional.of(loan));
+
+        String json = new ObjectMapper().writeValueAsString(dto);
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .patch(LOAN_API.concat("/1"))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(json);
+
+        mvc.perform(request).andExpect(status().isOk());
+        Mockito.verify(loanService, Mockito.times(1)).update(loan.getId(), dto);
+    }
+
+    @Test
+    @DisplayName("Deve retornar 404 quando tentar devolver um livro inexistente")
+    public void returnInexistentBookTest() throws Exception{
+
+        ReturnedLoanDTO dto = ReturnedLoanDTO.builder().returned(true).build();
+
+
+        BDDMockito.given(loanService.getById(Mockito.anyLong())).willReturn(Optional.empty());
+
+        String json = new ObjectMapper().writeValueAsString(dto);
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .patch(LOAN_API.concat("/1"))
+                .contentType(MediaType.APPLICATION_JSON)
+                .accept(MediaType.APPLICATION_JSON)
+                .content(json);
+
+        mvc.perform(request).andExpect(status().isNotFound());
+    }
+
 }

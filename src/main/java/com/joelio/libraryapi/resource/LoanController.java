@@ -2,11 +2,13 @@ package com.joelio.libraryapi.resource;
 
 
 import com.joelio.libraryapi.DTO.LoanDTO;
+import com.joelio.libraryapi.DTO.ReturnedLoanDTO;
 import com.joelio.libraryapi.model.Book;
 import com.joelio.libraryapi.model.Loan;
 import com.joelio.libraryapi.service.BookService;
 import com.joelio.libraryapi.service.LoanService;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -17,9 +19,15 @@ import java.time.LocalDate;
 @RequestMapping("/api/Loans")
 @RequiredArgsConstructor
 public class LoanController {
-    private final LoanService loanService;
-    private final BookService bookService;
+    private  LoanService loanService;
+    private  BookService bookService;
+    private ModelMapper modelMapper;
 
+    public LoanController(LoanService loanService, BookService bookService, ModelMapper modelMapper) {
+        this.loanService = loanService;
+        this.bookService = bookService;
+        this.modelMapper = modelMapper;
+    }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -32,6 +40,11 @@ public class LoanController {
                 .build();
         entity = loanService.save(entity);
         return entity.getId();
+    }
+
+    @PatchMapping("{id}")
+    public void returnBook(@PathVariable Long id, @RequestBody ReturnedLoanDTO dto){
+      loanService.update(id,dto);
     }
 
 }

@@ -83,7 +83,8 @@ public class BookControllerTest {
 
     @Test
     @DisplayName("Deve dar erro por falta de dados na criação.")
-    public void createInvalidBoookTest() throws Exception {
+    public void createInvalidBookTest() throws Exception {
+
 
         String json = new ObjectMapper().writeValueAsString(new BookDTO());
 

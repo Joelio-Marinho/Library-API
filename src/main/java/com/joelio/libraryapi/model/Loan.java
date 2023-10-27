@@ -29,7 +29,7 @@ public class Loan  implements Serializable {
     @Column
     private LocalDate localDate;
     @Column
-    private Boolean returnd;
+    private Boolean returned;
 
 
 
